@@ -1,8 +1,5 @@
-package com.example.beerpongclub.ui.login;
+/*package com.example.beerpongclub.ui.login;
 
-import android.app.Activity;
-
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -25,10 +22,12 @@ import android.widget.Toast;
 import com.example.beerpongclub.R;
 import com.example.beerpongclub.ui.login.LoginViewModel;
 import com.example.beerpongclub.ui.login.LoginViewModelFactory;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
+    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,13 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+
+        //setting the password EditText invisble -> should be visible after entering the E-Mail
+        passwordEditText.setVisibility(View.INVISIBLE);
+
+        //initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -75,6 +81,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 //Complete and destroy login activity once successful
                 finish();
+
+
             }
         });
 
@@ -129,3 +137,4 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 }
+*/
