@@ -20,6 +20,4 @@ public class LoggedInUser {
     public String getDisplayName() {
         return displayName;
     }
-} //test LOL
-//aklsdjf
-//oiasjd
+}
