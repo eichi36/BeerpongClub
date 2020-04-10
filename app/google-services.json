@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "820056006996",
+    "firebase_url": "https://connectfirebasedemo-e4cc5.firebaseio.com",
+    "project_id": "connectfirebasedemo-e4cc5",
+    "storage_bucket": "connectfirebasedemo-e4cc5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820056006996:android:9cde229f9e9aa0830928c1",
+        "android_client_info": {
+          "package_name": "com.example.beerpongclub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "820056006996-9ido7j099t253dk623t6arorc96clk08.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.beerpongclub",
+            "certificate_hash": "a4c870b85f6d0562594bdf93b70e4c41197cf567"
+          }
+        },
+        {
+          "client_id": "820056006996-daa4eejlur6u8ob8q1emudh80cpk9a2p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDl67yH3fPClJ1D2IOkbE9tpzP1_O1scBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "820056006996-daa4eejlur6u8ob8q1emudh80cpk9a2p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820056006996:android:d1553c1f33b77d560928c1",
+        "android_client_info": {
+          "package_name": "com.example.connectfirebasedemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "820056006996-2pk2lhh52o2b8ien7clhpq9cnc9sg414.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.connectfirebasedemo",
+            "certificate_hash": "a4c870b85f6d0562594bdf93b70e4c41197cf567"
+          }
+        },
+        {
+          "client_id": "820056006996-daa4eejlur6u8ob8q1emudh80cpk9a2p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDl67yH3fPClJ1D2IOkbE9tpzP1_O1scBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "820056006996-daa4eejlur6u8ob8q1emudh80cpk9a2p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
