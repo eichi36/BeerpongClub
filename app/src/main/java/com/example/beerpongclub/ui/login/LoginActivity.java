@@ -1,16 +1,8 @@
 package com.example.beerpongclub.ui.login;
 
 import android.app.Activity;
-
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -22,14 +14,26 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.beerpongclub.R;
-import com.example.beerpongclub.ui.login.LoginViewModel;
-import com.example.beerpongclub.ui.login.LoginViewModelFactory;
+import com.example.beerpongclub.SignInActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
-
+    private FirebaseAuth mAuth;
+    EditText usernameEditText;
+    EditText passwordEditText;
+    Button loginButton;
+    private TextView createAccount;
+    ProgressBar loadingProgressBar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +41,24 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = findViewById(R.id.username);
+        usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        final TextView createAccount = (TextView) findViewById(R.id.textView_create_account);
+
+        //Setting Edit password invisible -> gets visible after username has been checked
+        //passwordEditText.setVisibility(View.INVISIBLE);
+        //usernameEditText.setVisibility(View.INVISIBLE);
+        //loginButton.setVisibility(View.INVISIBLE);
+
+        //Initialize Firebase Auth
+        mAuth= FirebaseAuth.getInstance();
+        Toast.makeText(LoginActivity.this, "onCreate", Toast.LENGTH_SHORT).show();
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+
+            //on change will be called when the data has been changed
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
                 if (loginFormState == null) {
@@ -119,6 +135,34 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+
+
+    }
+
+
+
+
+
+    private void updateUI(FirebaseUser user) {
+        if(user == null) {
+            usernameEditText.setVisibility(View.VISIBLE);
+            loginButton = (Button) findViewById(R.id.login);
+            if(loginButton == null) Toast.makeText(LoginActivity.this, "Login Button == null", Toast.LENGTH_SHORT).show();
+            loginButton.setText(R.string.loginButton_Continue);
+            loginButton.setVisibility(View.VISIBLE);
+            Toast.makeText(LoginActivity.this, "User not registered", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(LoginActivity.this, user.getUid(), Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
@@ -127,5 +171,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void createAccount_onClick(View view) {
+        Intent intent = new Intent(LoginActivity.this, SignInActivity.class);
+        startActivity(intent);
     }
 }
