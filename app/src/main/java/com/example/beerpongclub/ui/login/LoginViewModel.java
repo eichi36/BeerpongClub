@@ -4,18 +4,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Patterns;
-
+import com.example.beerpongclub.R;
 import com.example.beerpongclub.data.LoginRepository;
 import com.example.beerpongclub.data.Result;
 import com.example.beerpongclub.data.model.LoggedInUser;
-import com.example.beerpongclub.R;
 
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
+    private LogInChecker logInChecker = new LogInChecker();
 
     LoginViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
@@ -56,11 +55,8 @@ public class LoginViewModel extends ViewModel {
         if (username == null) {
             return false;
         }
-        if (username.contains("@")) {
-            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
-        } else {
-            return !username.trim().isEmpty();
-        }
+        logInChecker.setUsername(username);
+        return logInChecker.check_username();
     }
 
     // A placeholder password validation check
