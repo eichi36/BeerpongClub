@@ -14,4 +14,10 @@
     <string name="repeat_password">Repeat Password</string>
     <string name="username">Username</string>
     <string name="create_account">Create Account</string>
+    <string name="ERROR_USER_NOT_FOUND">This E-Mail does not exist</string>
+    <string name="invalid_email_signIn">Invalid E-Mail address</string>
+    <string name="password_missmatch_signIn">Passwords do not match!</string>
+    <string name="password_too_short_signIn"><![CDATA[Password must be >= 6 characters]]></string>
+    <string name="username_too_short_signIn"><![CDATA[Username mus be > 3 characters]]></string>
+    <string name="google_signin_or">OR</string>
 </resources>
