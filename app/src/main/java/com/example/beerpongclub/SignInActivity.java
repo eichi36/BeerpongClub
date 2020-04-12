@@ -3,6 +3,7 @@ package com.example.beerpongclub;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SignInActivity extends AppCompatActivity {
@@ -22,6 +24,7 @@ public class SignInActivity extends AppCompatActivity {
     private EditText Username;
     private EditText password;
     private EditText confirm_password;
+    private Button createAccButton;
 
     private static final String TAG = "EmailPassword";
 
@@ -35,19 +38,22 @@ public class SignInActivity extends AppCompatActivity {
         Username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         confirm_password = (EditText) findViewById(R.id.password_repeat);
+        createAccButton = (Button) findViewById(R.id.button_createUser);
 
         //Initializing Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
     }
 
     public void createAccount(View view) {
-        String pass_str= password.getText().toString();
+        String pass_str = password.getText().toString();
         String rep_pass = confirm_password.getText().toString();
-        if(!pass_str.equals(rep_pass)) {
+        if (!pass_str.equals(rep_pass)) {
             Toast.makeText(SignInActivity.this, "Password does not match! ", Toast.LENGTH_LONG).show();
             Toast.makeText(SignInActivity.this, pass_str, Toast.LENGTH_LONG).show();
             Toast.makeText(SignInActivity.this, rep_pass, Toast.LENGTH_LONG).show();
         } else {
+
             mAuth.createUserWithEmailAndPassword(EMail.getText().toString(), password.getText().toString())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -59,6 +65,12 @@ public class SignInActivity extends AppCompatActivity {
 
                             } else {
                                 // If sign in fails, display a message to the user.
+                                String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
+
+                                switch (errorCode) {
+                                    case "ERROR_EMAIL_ALREADY_IN_USE":
+                                        EMail.setError(task.getException().getMessage());
+                                }
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                 Toast.makeText(SignInActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
