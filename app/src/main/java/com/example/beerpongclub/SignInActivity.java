@@ -1,6 +1,8 @@
 package com.example.beerpongclub;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SignInActivity extends AppCompatActivity {
+
+    private SignInViewModel signinViewModel;
 
     private FirebaseAuth mAuth;
     private EditText EMail;
@@ -33,6 +39,9 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        signinViewModel = ViewModelProviders.of(this, new SigninViewModelFactory())
+                .get(SignInViewModel.class);
+
         //Getting Views
         EMail = (EditText) findViewById(R.id.Email);
         Username = (EditText) findViewById(R.id.username);
@@ -43,15 +52,55 @@ public class SignInActivity extends AppCompatActivity {
         //Initializing Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
+        signinViewModel.getSignInFormState().observe(this, new Observer<SignInFormState>() {
+            //observes every Error entry of every Input
+            @Override
+            public void onChanged(SignInFormState signInFormState) {
+                if(signInFormState == null) {
+                    return;
+                }
+                createAccButton.setEnabled(signInFormState.isDataValid());
+                if(signInFormState.getEmailError() != null) {
+                    EMail.setError(getString(signInFormState.getEmailError()));
+                }
+                if(signInFormState.getPasswordError() != null) {
+                    password.setError(getString(signInFormState.getPasswordError()));
+                }
+                if(signInFormState.getUsernameError() != null) {
+                    Username.setError(getString(signInFormState.getUsernameError()));
+                }
+            }
+        });
+
+        TextWatcher afterTextChangedListener = new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //ignore
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                signinViewModel.signInDataChanged(EMail.getText().toString(), password.getText().toString(), confirm_password.getText().toString(), Username.getText().toString());
+            }
+        };
+        Username.addTextChangedListener(afterTextChangedListener);
+        EMail.addTextChangedListener(afterTextChangedListener);
+        password.addTextChangedListener(afterTextChangedListener);
+        confirm_password.addTextChangedListener(afterTextChangedListener);
+
     }
 
     public void createAccount(View view) {
         String pass_str = password.getText().toString();
         String rep_pass = confirm_password.getText().toString();
         if (!pass_str.equals(rep_pass)) {
-            Toast.makeText(SignInActivity.this, "Password does not match! ", Toast.LENGTH_LONG).show();
-            Toast.makeText(SignInActivity.this, pass_str, Toast.LENGTH_LONG).show();
-            Toast.makeText(SignInActivity.this, rep_pass, Toast.LENGTH_LONG).show();
+            confirm_password.setError(getString(R.string.password_missmatch_signIn));
         } else {
 
             mAuth.createUserWithEmailAndPassword(EMail.getText().toString(), password.getText().toString())
