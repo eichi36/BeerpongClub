@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         final TextView createAccount = (TextView) findViewById(R.id.textView_create_account);
 
         //Setting Edit password invisible -> gets visible after username has been checked
-        //passwordEditText.setVisibility(View.INVISIBLE);
+        passwordEditText.setVisibility(View.INVISIBLE);
         //usernameEditText.setVisibility(View.INVISIBLE);
         //loginButton.setVisibility(View.INVISIBLE);
 
@@ -129,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
+
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
