@@ -288,6 +288,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     Toast.makeText(LoginActivity.this, "Succesfull Google Sign In", Toast.LENGTH_SHORT).show();
                     FirebaseUser user = mAuth.getCurrentUser();
+                    assert user != null;
                     Toast.makeText(LoginActivity.this, user.getDisplayName(), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(LoginActivity.this, "Google Sign In failded", Toast.LENGTH_SHORT).show();
