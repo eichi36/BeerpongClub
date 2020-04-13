@@ -1,4 +1,4 @@
-/*package com.example.beerpongclub.ui.login;
+package com.example.beerpongclub.ui.login;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -6,11 +6,10 @@ import androidx.annotation.NonNull;
 
 import com.example.beerpongclub.data.LoginDataSource;
 import com.example.beerpongclub.data.LoginRepository;
-*/
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
  * Required given LoginViewModel has a non-empty constructor
- *//*
+ */
 public class LoginViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
@@ -24,4 +23,3 @@ public class LoginViewModelFactory implements ViewModelProvider.Factory {
         }
     }
 }
-*/
