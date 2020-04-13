@@ -1,4 +1,6 @@
-package com.example.beerpongclub;
+package com.example.beerpongclub.SignIn;
+
+import com.example.beerpongclub.R;
 
 public class SignInChecker {
     private String Email;

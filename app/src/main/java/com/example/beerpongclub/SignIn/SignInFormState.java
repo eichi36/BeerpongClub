@@ -1,4 +1,4 @@
-package com.example.beerpongclub;
+package com.example.beerpongclub.SignIn;
 
 import androidx.annotation.Nullable;
 
