@@ -1,17 +1,22 @@
 package com.example.beerpongclub.Database;
 
-public class User extends DatabaseElement{
+
+
+public class User{
     //User class that will be pushed to the database;
     //It must include every Element of the
     private String Username;
     private String EMail;
     private String password;
+    private String Uid;
 
-    public User(String username, String EMail, String password) {
+
+
+    public User(String username, String EMail, String password, String Uid) {
         this.Username = username;
         this.EMail = EMail;
         this.password = password;
-        this.PATH="User";
+        this.Uid = Uid;
     }
 
     public String getUsername() {
@@ -37,4 +42,14 @@ public class User extends DatabaseElement{
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getUid() {
+        return Uid;
+    }
+
+    public void setUid(String uid) {
+        Uid = uid;
+    }
+
+
 }

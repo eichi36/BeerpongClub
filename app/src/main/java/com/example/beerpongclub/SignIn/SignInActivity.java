@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.beerpongclub.Database.User;
 import com.example.beerpongclub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,10 +22,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity {
 
     private SignInViewModel signinViewModel;
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference mReff_user = database.getReference("User");
 
     private FirebaseAuth mAuth;
     private EditText EMail;
@@ -32,6 +38,7 @@ public class SignInActivity extends AppCompatActivity {
     private EditText password;
     private EditText confirm_password;
     private Button createAccButton;
+
 
     private static final String TAG = "EmailPassword";
 
@@ -98,8 +105,10 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void createAccount(View view) {
-        String pass_str = password.getText().toString();
+        final String pass_str = password.getText().toString();
         String rep_pass = confirm_password.getText().toString();
+
+
         if (!pass_str.equals(rep_pass)) {
             confirm_password.setError(getString(R.string.password_missmatch_signIn));
         } else {
@@ -117,6 +126,10 @@ public class SignInActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(SignInActivity.this, "User == null", Toast.LENGTH_LONG).show();
                                 }
+
+                                User userPush = new User(Username.getText().toString(), user.getEmail(), password.getText().toString(), user.getUid());
+                                mReff_user.child(user.getUid()).push().setValue(userPush);
+
                             } else {
                                 // If sign in fails, display a message to the user.
                                 String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
@@ -138,4 +151,6 @@ public class SignInActivity extends AppCompatActivity {
 
 
     }
+
+
 }
