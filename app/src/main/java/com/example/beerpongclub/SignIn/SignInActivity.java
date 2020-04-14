@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.beerpongclub.Database.User;
+import com.example.beerpongclub.Database.UserContainer;
 import com.example.beerpongclub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,15 +24,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity {
 
     private SignInViewModel signinViewModel;
-
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference mReff_user = database.getReference("User");
 
     private FirebaseAuth mAuth;
     private EditText EMail;
@@ -39,8 +36,11 @@ public class SignInActivity extends AppCompatActivity {
     private EditText confirm_password;
     private Button createAccButton;
 
+    private ProgressBar loadingProgressbar;
+
 
     private static final String TAG = "EmailPassword";
+    private static final String TAG_NULL = "NULLPOINTER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,9 @@ public class SignInActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         confirm_password = (EditText) findViewById(R.id.password_repeat);
         createAccButton = (Button) findViewById(R.id.button_createUser);
+        loadingProgressbar = (ProgressBar)findViewById(R.id.loading_SignIn);
+
+        loadingProgressbar.setVisibility(View.INVISIBLE);
 
         //Initializing Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -109,6 +112,8 @@ public class SignInActivity extends AppCompatActivity {
         String rep_pass = confirm_password.getText().toString();
 
 
+        updateUI_loading(true);
+
         if (!pass_str.equals(rep_pass)) {
             confirm_password.setError(getString(R.string.password_missmatch_signIn));
         } else {
@@ -127,8 +132,9 @@ public class SignInActivity extends AppCompatActivity {
                                     Toast.makeText(SignInActivity.this, "User == null", Toast.LENGTH_LONG).show();
                                 }
 
-                                User userPush = new User(Username.getText().toString(), user.getEmail(), password.getText().toString(), user.getUid());
-                                mReff_user.child(user.getUid()).push().setValue(userPush);
+                                UserContainer userPush = new UserContainer(new User(Username.getText().toString(), user.getEmail(), password.getText().toString(), user.getUid()));
+                                userPush.pushElement();
+
 
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -147,9 +153,25 @@ public class SignInActivity extends AppCompatActivity {
                             // ...
                         }
                     });
+
+
         }
+        updateUI_loading(false);
 
+    }
 
+    private void updateUI_loading(boolean start) {
+        if(start) {
+            loadingProgressbar.setVisibility(View.VISIBLE);
+
+        } else {
+            loadingProgressbar.setVisibility(View.INVISIBLE);
+        }
+        EMail.setEnabled(!start);
+        Username.setEnabled(!start);
+        password.setEnabled(!start);
+        confirm_password.setEnabled(!start);
+        createAccButton.setEnabled(!start);
     }
 
 

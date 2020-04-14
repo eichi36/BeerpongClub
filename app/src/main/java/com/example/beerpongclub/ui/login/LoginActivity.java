@@ -1,6 +1,5 @@
 package com.example.beerpongclub.ui.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,11 +14,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.beerpongclub.Database.User;
+import com.example.beerpongclub.Database.UserContainer;
 import com.example.beerpongclub.R;
 import com.example.beerpongclub.SignIn.SignInActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,11 +36,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
 
     private static final String TAG = "EmailPassword";
+    private static final String TAG_INSERT_CHILD ="Database_check_user_exists";
     private static final int RC_SING_IN = 1;
 
     private LoginViewModel loginViewModel;
@@ -50,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     private TextView createAccount;
     ProgressBar loadingProgressBar;
+    private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference mReff = mDatabase.getReference();
 
     private SignInButton signInButton;
     private GoogleSignInClient mGoogleSignInClient;
@@ -65,11 +73,11 @@ public class LoginActivity extends AppCompatActivity {
                 .get(LoginViewModel.class);
 
         usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.login);
-        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
-        final TextView createAccount = (TextView) findViewById(R.id.textView_create_account);
-        final SignInButton signInButton = (SignInButton) findViewById(R.id.googleSignIn_button);
+        passwordEditText = findViewById(R.id.password);
+        loginButton = findViewById(R.id.login);
+        loadingProgressBar = findViewById(R.id.loading);
+        createAccount = (TextView) findViewById(R.id.textView_create_account);
+        signInButton = (SignInButton) findViewById(R.id.googleSignIn_button);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -112,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
+        /*
         loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
             @Override
             public void onChanged(@Nullable LoginResult loginResult) {
@@ -131,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                 //Complete and destroy login activity once successful
                 finish();
             }
-        });
+        });*/
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
@@ -169,7 +177,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
+                updateUI_loading(true);
 
                 //loginViewModel.login(usernameEditText.getText().toString()passwordEditText.getText().toString());
 
@@ -181,6 +189,7 @@ public class LoginActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+
 
                                 } else {
                                     // If sign in fails, display a message to the user.
@@ -204,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // ...
                             }
                         });
-                loadingProgressBar.setVisibility(View.INVISIBLE);
+                updateUI_loading(false);
             }
         });
 
@@ -234,8 +243,18 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Toast.makeText(LoginActivity.this, user.getUid(), Toast.LENGTH_SHORT).show();
         }
+    }
 
-
+    private void updateUI_loading(boolean start) {
+        if(start) {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            loadingProgressBar.setVisibility(View.INVISIBLE);
+        }
+        passwordEditText.setEnabled(!start);
+        usernameEditText.setEnabled(!start);
+        loginButton.setEnabled(!start);
+        signInButton.setEnabled(!start);
     }
 
     private void signIn() {
@@ -243,15 +262,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SING_IN);
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-    }
-
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
-    }
 
 
     public void createAccount_onClick(View view) {
@@ -288,6 +298,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     Toast.makeText(LoginActivity.this, "Succesfull Google Sign In", Toast.LENGTH_SHORT).show();
                     FirebaseUser user = mAuth.getCurrentUser();
+                    checkLogin(user);
                     assert user != null;
                     Toast.makeText(LoginActivity.this, user.getDisplayName(), Toast.LENGTH_LONG).show();
                 } else {
@@ -295,5 +306,35 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void checkLogin(final FirebaseUser user) {
+        //checks if user exists
+
+        ValueEventListener valueEventListener =new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(user.getUid())) {
+                    Log.d(TAG_INSERT_CHILD, "User already exists");
+                } else {
+                    Log.e(TAG_INSERT_CHILD, "User does not exist in RTD");
+                    UserContainer userPush = new UserContainer(new User(user.getDisplayName(), user.getEmail(), null, user.getUid()));
+                    userPush.pushElement();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        };
+
+
+        mReff.addListenerForSingleValueEvent(valueEventListener);
+
+
     }
 }
