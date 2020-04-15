@@ -1,5 +1,6 @@
 package com.example.beerpongclub.SignIn;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.beerpongclub.Database.User;
 import com.example.beerpongclub.Database.UserContainer;
+import com.example.beerpongclub.HomeActivity;
 import com.example.beerpongclub.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -134,6 +136,11 @@ public class SignInActivity extends AppCompatActivity {
 
                                 UserContainer userPush = new UserContainer(new User(Username.getText().toString(), user.getEmail(), password.getText().toString(), user.getUid()));
                                 userPush.pushElement();
+
+                                Intent signInIntent = new Intent(SignInActivity.this, HomeActivity.class);
+                                signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                signInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(signInIntent);
 
 
                             } else {

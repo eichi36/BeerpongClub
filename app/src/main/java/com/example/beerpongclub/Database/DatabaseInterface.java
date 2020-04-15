@@ -4,4 +4,6 @@ public interface DatabaseInterface {
 
     public void pushElement();
 
+    public void updateElement();
+
 }

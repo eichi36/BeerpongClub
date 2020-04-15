@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.beerpongclub.Database.User;
 import com.example.beerpongclub.Database.UserContainer;
+import com.example.beerpongclub.HomeActivity;
 import com.example.beerpongclub.R;
 import com.example.beerpongclub.SignIn.SignInActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -189,6 +190,7 @@ public class LoginActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    checkLogin(user);
 
 
                                 } else {
@@ -321,8 +323,12 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Log.e(TAG_INSERT_CHILD, "User does not exist in RTD");
                     UserContainer userPush = new UserContainer(new User(user.getDisplayName(), user.getEmail(), null, user.getUid()));
-                    userPush.pushElement();
+                    userPush.updateElement();
                 }
+                Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(homeIntent);
             }
 
             @Override

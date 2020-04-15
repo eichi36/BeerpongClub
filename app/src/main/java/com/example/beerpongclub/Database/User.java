@@ -11,7 +11,7 @@ public class User{
     private String Uid;
 
 
-
+    public User () {}
     public User(String username, String EMail, String password, String Uid) {
         this.Username = username;
         this.EMail = EMail;
@@ -23,7 +23,7 @@ public class User{
         return Username;
     }
 
-    public void setUsername(String username) {
+    public void setusername(String username) {
         Username = username;
     }
 
@@ -31,7 +31,7 @@ public class User{
         return EMail;
     }
 
-    public void setEMail(String EMail) {
+    public void setemail(String EMail) {
         this.EMail = EMail;
     }
 
@@ -39,7 +39,7 @@ public class User{
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setpassword(String password) {
         this.password = password;
     }
 
@@ -47,7 +47,7 @@ public class User{
         return Uid;
     }
 
-    public void setUid(String uid) {
+    public void setuid(String uid) {
         Uid = uid;
     }
 
