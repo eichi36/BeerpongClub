@@ -18,7 +18,7 @@
     <string name="invalid_email_signIn">Invalid E-Mail address</string>
     <string name="password_missmatch_signIn">Passwords do not match!</string>
     <string name="password_too_short_signIn"><![CDATA[Password must be >= 6 characters]]></string>
-    <string name="username_too_short_signIn"><![CDATA[Username mus be > 3 characters]]></string>
+    <string name="username_too_short_signIn"><![CDATA[Username must be > 3 characters]]></string>
     <string name="google_signin_or">OR</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -34,4 +34,22 @@
 
     <string name="home_second">Home Second</string>
     <string name="action_logout">Logout</string>
+    <string name="title_activity_account">AccountActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="item_title_account_settings">Account Settings</string>
+    <string name="default_username_home_displayUsername">Username</string>
+    <string name="default_EMail_home_displayEMail">E-Mail</string>
+    <string name="item_title_statistics">Own statistics</string>
+    <string name="item_title_profiel">Profile</string>
+    <string name="item_menu_title_manageFriends">Manage your Groups</string>
+    <string name="changeUsernameDefault_account_settings">Username</string>
+    <string name="changeEMailDefault_account_settings">EMail</string>
+    <string name="changePassword_account_settings">CHANGE PASSWORD</string>
+    <string name="changeUsernameDialog_hint">New Username</string>
+    <string name="username_too_long_singIn"><![CDATA[Username must be <= 25 characters]]></string>
+    <string name="dialog_updatePassword_GoogleSignIn">You are signed in with Google. You can only change your password on your Google Account.</string>
+    <string name="confirm_old_password_hint_editText_dialogChangePassword">Confirm old password</string>
+    <string name="select_new_password_dialog_changePassword_editText_newPassword">Select new password</string>
+    <string name="confirm_new_password_dialog_changePassword_editText_confirm_newPassword">Confirm new Password</string>
 </resources>

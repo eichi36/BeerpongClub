@@ -134,7 +134,7 @@ public class SignInActivity extends AppCompatActivity {
                                     Toast.makeText(SignInActivity.this, "User == null", Toast.LENGTH_LONG).show();
                                 }
 
-                                UserContainer userPush = new UserContainer(new User(Username.getText().toString(), user.getEmail(), password.getText().toString(), user.getUid()));
+                                UserContainer userPush = new UserContainer(new User(Username.getText().toString(), user.getEmail(), password.getText().toString(), user.getUid(), "default"));
                                 userPush.pushElement();
 
                                 Intent signInIntent = new Intent(SignInActivity.this, HomeActivity.class);

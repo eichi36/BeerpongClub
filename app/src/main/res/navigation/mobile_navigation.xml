@@ -5,12 +5,21 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
+
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@id/nav_home"
         android:name="com.example.beerpongclub.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_home"/>
 
+    <fragment
+        android:id="@+id/nav_action_settings"
+        android:name="com.example.beerpongclub.ui.AccountSettings.AccountSettingsFragment"
+        android:label="@string/item_title_account_settings"
+        tools:layout="@layout/fragment_account"/>
+
+
+        <!--
         <action
             android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
             app:destination="@id/nav_home_second" />
@@ -27,16 +36,16 @@
         <argument
             android:name="myArg"
             app:argType="string" />
-    </fragment>
+    </fragment>-->
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_statistics"
         android:name="com.example.beerpongclub.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_manageFriends"
         android:name="com.example.beerpongclub.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />

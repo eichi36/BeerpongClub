@@ -9,14 +9,17 @@ public class User{
     private String EMail;
     private String password;
     private String Uid;
+    private String profile_pic_uri;
+
 
 
     public User () {}
-    public User(String username, String EMail, String password, String Uid) {
+    public User(String username, String EMail, String password, String Uid, String profilePicUri) {
         this.Username = username;
         this.EMail = EMail;
         this.password = password;
         this.Uid = Uid;
+        this.profile_pic_uri = profilePicUri;
     }
 
     public String getUsername() {
@@ -51,5 +54,11 @@ public class User{
         Uid = uid;
     }
 
+    public String getprofile_pic_uri() {
+        return profile_pic_uri;
+    }
 
+    public void setprofile_pic_urii(String profilePicUri) {
+        this.profile_pic_uri = profilePicUri;
+    }
 }

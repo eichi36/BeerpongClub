@@ -3,11 +3,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
+    <item
+        android:id="@+id/nav_home"
+        android:title="@string/menu_home"
+        android:icon="@drawable/ic_menu_home" />
+
+    <item
+        android:title="@string/item_title_profiel">
+
+    <menu>
+        <item
+            android:id="@+id/nav_action_settings"
+            android:icon="@drawable/ic_action_account_settings"
+            android:title="@string/item_title_account_settings" />
+        <item
+            android:id="@+id/nav_statistics"
+            android:icon="@drawable/ic_action_statistics"
+            android:title="@string/item_title_statistics" />
+        <item
+            android:id="@+id/nav_manageFriends"
+            android:icon="@drawable/ic_menue_managefriends"
+            android:title="@string/item_menu_title_manageFriends" />
+    </menu>
+    </item>
+
+</menu>
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/nav_action_settings"
+            android:icon="@drawable/ic_action_account_settings"
+            android:title="@string/item_title_account_settings" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
@@ -17,4 +49,5 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_slideshow" />
     </group>
-</menu>
+    </menu>
+    -->

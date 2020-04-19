@@ -322,7 +322,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG_INSERT_CHILD, "User already exists");
                 } else {
                     Log.e(TAG_INSERT_CHILD, "User does not exist in RTD");
-                    UserContainer userPush = new UserContainer(new User(user.getDisplayName(), user.getEmail(), null, user.getUid()));
+                    UserContainer userPush = new UserContainer(new User(user.getDisplayName(), user.getEmail(), null, user.getUid(), null));
                     userPush.updateElement();
                 }
                 Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);

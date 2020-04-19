@@ -2,13 +2,8 @@ package com.example.beerpongclub.Database;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import javax.annotation.Nullable;
 
@@ -52,6 +47,10 @@ public  class UserContainer implements  DatabaseInterface{
 
     public User getUser_searchedFor(){return this.user_searchedFor;}
 
+    public void setUserUsername(String str) { user_element.setusername(str);}
+
+    public void setUserPassword(String str) { user_element.setpassword(str);}
+
     public DatabaseReference getRetrieveReff(String id){
         DatabaseReference getUserReff = mReff_User.child(id);
         return getUserReff;
@@ -78,41 +77,12 @@ public  class UserContainer implements  DatabaseInterface{
             mReff_User.child(user_element.getUid()).child("username").setValue(user_element.getUsername());
             Log.d(TAG_UPDATE, user_element.getUsername());
         }
+        if(user_element.getprofile_pic_uri() != null) {
+            mReff_User.child(user_element.getUid()).child("profile_pic_uri").setValue(user_element.getprofile_pic_uri());
+            Log.d(TAG_UPDATE, user_element.getprofile_pic_uri());
+        }
     }
 
 
-    public String getUserByUid(final String id) {
-        DatabaseReference getUserReff = mReff_User.child(id);
-        final String[] username = new String[1];
-        User u;
 
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User u = dataSnapshot.getValue(User.class);
-                setUser_searchedFor(dataSnapshot.getValue(User.class));
-                Log.d(TAG_GET_USER, "Test: "+ user_searchedFor.getUsername());
-                if(u == null) {
-                    Log.e(TAG_GET_USER,"User is Null");
-                } else {
-                    user_searchedFor.setusername(u.getUsername());
-                    Log.d(TAG_GET_USER, u.getUid());
-                    Log.d(TAG_GET_USER, u.getEMail());
-                    Log.d(TAG_GET_USER, u.getUsername());
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-
-        Log.d(TAG_GET_USER, "Return Value: " + user_searchedFor.getUsername());
-
-        getUserReff.addListenerForSingleValueEvent(valueEventListener);
-        return "Test";
-    }
 }

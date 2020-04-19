@@ -62,6 +62,9 @@ public class SignInChecker {
         if(username.length() < 4) {
             return R.string.username_too_short_signIn;
         }
+        if(username.length() >=25) {
+            return R.string.username_too_long_singIn;
+        }
         return null;
 
     }
