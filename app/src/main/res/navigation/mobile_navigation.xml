@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/nav_manageFriends"
-        android:name="com.example.beerpongclub.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="com.example.beerpongclub.ui.ManageFriendsFragment.fragment_manage_friends"
+        android:label="@string/menu_manage_friends"
+        tools:layout="@layout/fragment_manage_friends_fragment" />
 </navigation>

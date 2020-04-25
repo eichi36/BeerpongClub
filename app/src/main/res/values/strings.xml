@@ -52,4 +52,10 @@
     <string name="confirm_old_password_hint_editText_dialogChangePassword">Confirm old password</string>
     <string name="select_new_password_dialog_changePassword_editText_newPassword">Select new password</string>
     <string name="confirm_new_password_dialog_changePassword_editText_confirm_newPassword">Confirm new Password</string>
+    <string name="menu_manage_friends">Manage your Friends</string>
+    <string name="button_add_friends_framgentManageFriends">ADD FRIENDS</string>
+    <string name="search_for_a_user_textView_addFriendsActivity">Search for a User</string>
+    <string name="search_username_editTextHint_activityAddFriends">Search for Username</string>
+    <string name="send_invitation_link_button_activityAddFriends">Send Invitation Link</string>
+    <string name="user_DEFAULT_SHORT_Email">user.email@</string>
 </resources>

@@ -15,7 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.beerpongclub.Database.User;
 import com.example.beerpongclub.Database.UserContainer;
@@ -25,16 +26,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
-
-import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,6 +41,9 @@ public class AccountSettingsFragment extends Fragment {
 
     private static final String TAG_IMAGE = "PROFILE_IMAGE";
     private static final String PATH_PROFILE_PIC = "profile_images";
+    private static final String TAG_VALUE_EVENT = "VALUE_EVENT";
+
+
     private static final int MAX_LENGTH = 10;
     private AccountSettingsViewModel accountVM ;
     private UserContainer userContainer;
@@ -60,16 +59,42 @@ public class AccountSettingsFragment extends Fragment {
 
     private static final int GALLERY_PICK = 1;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        accountVM = ViewModelProviders.of(this).get(AccountSettingsViewModel.class);
+        accountVM = new ViewModelProvider(this).get(AccountSettingsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_account, container, false);
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         editText_EMail = (TextView) root.findViewById(R.id.changeEMail_editText_accountSettings);
         editText_Username = (TextView) root.findViewById(R.id.changeUsername_editText_accountSettings);
-        addValueEventListener_username_EMail();
+        accountVM.getUsername().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.d(TAG_VALUE_EVENT, "observer Username called; Username = " + s);
+                editText_Username.setText(s);
+            }
+        });
+        accountVM.getEMail().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                editText_EMail.setText(s);
+            }
+        });
+        accountVM.getImageUri().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                String imageUri = s;
+                if(imageUri == null || imageUri == "default") {
+                    Log.d(TAG_IMAGE, "User has no Profile Picture; Displaying default");
+                } else {
+                    Log.d(TAG_VALUE_EVENT, "Displaying user Profile Picture");
+                    Picasso.get().load(imageUri).into(mProfileImageView);
+                }
+            }
+        });
+        //addValueEventListener_username_EMail();
         button_change_profile_pic = (ImageButton) root.findViewById(R.id.changeProfilePic_imageButton);
         button_change_profile_pic.setOnClickListener(change_profile_pic_OnClickListener);
         mProfileImageView = root.findViewById(R.id.profile_account_settings);
@@ -176,33 +201,7 @@ public class AccountSettingsFragment extends Fragment {
 
 
 
-    private void addValueEventListener_username_EMail() {
-        String id = mUser.getUid();
-        userContainer = new UserContainer();
 
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                editText_Username.setText(user.getUsername());
-                editText_EMail.setText(user.getEMail());
-                String imageUri = user.getprofile_pic_uri();
-                if(imageUri == null || imageUri == "default") {
-                    Log.d(TAG_IMAGE, "User has no Profile Picture; Displaying default");
-                } else {
-                    Log.d(TAG_IMAGE, "Displaying user Profile Picture");
-                    Picasso.get().load(imageUri).into(mProfileImageView);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        userContainer.getRetrieveReff(id).addValueEventListener(valueEventListener);
-
-    }
 
 
 }

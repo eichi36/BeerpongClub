@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    tools:context=".ui.ManageFriendsFragment.AddFriends.addFriendsActivity">
+
+    <TextView
+        android:id="@+id/textView_SearchForUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/search_for_a_user_textView_addFriendsActivity"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/button_sendFriendInvitationLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/colorAccent"
+        android:drawableEnd="@drawable/ic_share"
+        android:drawablePadding="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/send_invitation_link_button_activityAddFriends"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="@+id/textView_SearchForUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_SearchForUser" />
+
+    <EditText
+        android:id="@+id/editText_searchUser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/search_shape"
+        android:hint="@string/search_username_editTextHint_activityAddFriends"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:paddingBottom="20dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_startSearch"
+        app:layout_constraintStart_toStartOf="@+id/textView_SearchForUser"
+        app:layout_constraintTop_toBottomOf="@id/button_sendFriendInvitationLink" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageButton_startSearch"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/colorAccent"
+        android:src="@drawable/ic_search"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@id/editText_searchUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/editText_searchUser" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_showResult"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.842"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editText_searchUser">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
