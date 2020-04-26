@@ -67,6 +67,7 @@ public  class UserContainer implements  DatabaseInterface{
     public static String getTagGetUser() {
         return TAG_GET_USER;
     }
+
     public DatabaseReference getmReff_User() {return mReff_User;}
 
     public DatabaseReference getUsername_reff() {
@@ -94,31 +95,32 @@ public  class UserContainer implements  DatabaseInterface{
     public void updateElement() {
         String key = user_element.getUid();
 
-        //Map<String, Object> childUpdates = new HashMap<>();
         if(user_element.getEMail() != null) {
-            mReff_User.child(user_element.getUid()).child("email").setValue(user_element.getEMail());
+            mReff_User.child(key).child("email").setValue(user_element.getEMail());
             Log.d(TAG_UPDATE, user_element.getEMail());
         }
         if(user_element.getUid() != null) {
-            mReff_User.child(user_element.getUid()).child("uid").setValue(user_element.getUid());
+            mReff_User.child(key).child("uid").setValue(user_element.getUid());
             Log.d(TAG_UPDATE, user_element.getUid());
         }
         if(user_element.getPassword() != null) {
-            mReff_User.child(user_element.getUid()).child("password").setValue(user_element.getPassword());
+            mReff_User.child(key).child("password").setValue(user_element.getPassword());
             Log.d(TAG_UPDATE, user_element.getPassword());
         }
         if(user_element.getUsername() != null) {
-            mReff_User.child(user_element.getUid()).child("username").setValue(user_element.getUsername());
+            mReff_User.child(key).child("username").setValue(user_element.getUsername());
             Log.d(TAG_UPDATE, user_element.getUsername());
         }
         if(user_element.getprofile_pic_uri() != null) {
-            mReff_User.child(user_element.getUid()).child("profile_pic_uri").setValue(user_element.getprofile_pic_uri());
+            mReff_User.child(key).child("profile_pic_uri").setValue(user_element.getprofile_pic_uri());
             Log.d(TAG_UPDATE, user_element.getprofile_pic_uri());
         }
     }
 
+    @Override
+    public void deleteElement() {
 
-
+    }
 
 
 }

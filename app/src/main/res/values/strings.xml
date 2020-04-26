@@ -58,4 +58,11 @@
     <string name="search_username_editTextHint_activityAddFriends">Search for Username</string>
     <string name="send_invitation_link_button_activityAddFriends">Send Invitation Link</string>
     <string name="user_DEFAULT_SHORT_Email">user.email@</string>
+    <string name="send_friend_request_dialog_show_user">SEND FRIEND REQUEST</string>
+    <string name="cancelFriendRequest_buttonDialogAddFriend">CANCEL FRIEND REQUEST</string>
+    <string name="declinedFriendRequest_buttonDialogAddFriend">FRIEND REQUEST DECLINED</string>
+    <string name="button_add_group_fragmentManageFriends">ADD GROUP</string>
+    <string name="textView_title_friendRequests">Friend Requests</string>
+    <string name="button_accectFriendRequest_itemUserName">ACCEPT</string>
+    <string name="button_declineFriendRequest">DECLINE</string>
 </resources>

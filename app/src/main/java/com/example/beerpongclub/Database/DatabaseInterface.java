@@ -6,4 +6,6 @@ public interface DatabaseInterface {
 
     public void updateElement();
 
+    public void deleteElement();
+
 }
