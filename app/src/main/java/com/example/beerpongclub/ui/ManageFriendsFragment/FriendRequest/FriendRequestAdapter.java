@@ -21,6 +21,7 @@ public class FriendRequestAdapter extends FirebaseRecyclerAdapter<FriendRequest,
     private Context context;
 
     private static final String TAG_ERROR = "FriendRequestAdapter ERROR";
+    private static final String TAG_INFO = "FriendRequestAdapter INFOR";
 
     public FriendRequestAdapter(@NonNull FirebaseRecyclerOptions<FriendRequest> options) {
         super(options);
@@ -30,41 +31,49 @@ public class FriendRequestAdapter extends FirebaseRecyclerAdapter<FriendRequest,
     protected void onBindViewHolder(@NonNull final FriendRequestViewHolder holder, int position, @NonNull FriendRequest model) {
         if(context == null) { Log.e(TAG_ERROR, "Context must be set"); return;}
         String uid_from = model.getUid_from();
+        if(uid_from == null) {
+            Log.e(TAG_ERROR, "uid_from == null");
+            return;
+        }
         UserContainer userContainer = new UserContainer(uid_from);
         holder.setContext(context);
-        userContainer.getUsername_reff().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                holder.setUsername(dataSnapshot.getValue(String.class));
-            }
+        if(userContainer.getmReff_User().child(uid_from) != null) {
+            userContainer.getUsername_reff().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    holder.setUsername(dataSnapshot.getValue(String.class));
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-        userContainer.getEmail_reff().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                holder.setEmail(dataSnapshot.getValue(String.class));
-            }
+                }
+            });
+            userContainer.getEmail_reff().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    holder.setEmail(dataSnapshot.getValue(String.class));
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-        userContainer.getPro_pic_url_reff().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                holder.setUri(dataSnapshot.getValue(String.class));
-            }
+                }
+            });
+            userContainer.getPro_pic_url_reff().addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    holder.setUri(dataSnapshot.getValue(String.class));
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Log.i(TAG_INFO, "UID_TO not existing -> the user has no friend requests");
+        }
 
 
 
