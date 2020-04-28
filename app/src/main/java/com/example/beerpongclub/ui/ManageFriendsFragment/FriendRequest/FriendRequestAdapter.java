@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.beerpongclub.Database.FriendRequest;
 import com.example.beerpongclub.Database.UserContainer;
@@ -22,13 +23,14 @@ public class FriendRequestAdapter extends FirebaseRecyclerAdapter<FriendRequest,
 
     private static final String TAG_ERROR = "FriendRequestAdapter ERROR";
     private static final String TAG_INFO = "FriendRequestAdapter INFOR";
+    private OnItemClickListener_fq decline_listener;
 
     public FriendRequestAdapter(@NonNull FirebaseRecyclerOptions<FriendRequest> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final FriendRequestViewHolder holder, int position, @NonNull FriendRequest model) {
+    protected void onBindViewHolder(@NonNull final FriendRequestViewHolder holder, final int position, @NonNull final FriendRequest model) {
         if(context == null) { Log.e(TAG_ERROR, "Context must be set"); return;}
         String uid_from = model.getUid_from();
         if(uid_from == null) {
@@ -75,6 +77,15 @@ public class FriendRequestAdapter extends FirebaseRecyclerAdapter<FriendRequest,
             Log.i(TAG_INFO, "UID_TO not existing -> the user has no friend requests");
         }
 
+        holder.getButton_decline().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int positon = holder.getAdapterPosition();
+                if(position != RecyclerView.NO_POSITION && decline_listener != null) {
+                    decline_listener.onItemClick_decline(model, positon);
+                }
+            }
+        });
 
 
     }
@@ -89,5 +100,12 @@ public class FriendRequestAdapter extends FirebaseRecyclerAdapter<FriendRequest,
         this.context  = context;
     }
 
+    public interface OnItemClickListener_fq {
+        void onItemClick_decline(FriendRequest friendRequest, int positon);
+    }
+
+    public  void setOnItemClickListener_fq(OnItemClickListener_fq listener_fq) {
+        this.decline_listener = listener_fq;
+    }
 
 }

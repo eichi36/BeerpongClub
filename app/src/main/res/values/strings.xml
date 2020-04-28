@@ -65,4 +65,6 @@
     <string name="textView_title_friendRequests">Friend Requests</string>
     <string name="button_accectFriendRequest_itemUserName">ACCEPT</string>
     <string name="button_declineFriendRequest">DECLINE</string>
+    <string name="textView_title_friends">Your Friends</string>
+    <string name="your_own_profile_buttonDialogAddFriends">YOUR PROFILE</string>
 </resources>

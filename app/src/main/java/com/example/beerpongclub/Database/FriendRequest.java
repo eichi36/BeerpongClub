@@ -7,9 +7,9 @@ public class FriendRequest {
 
     public FriendRequest() {}
 
-    public FriendRequest( String state, String uid) {
+    public FriendRequest( String state, String uid_from) {
         this.state = state;
-        this.uid_from = uid;
+        this.uid_from = uid_from;
     }
 
 
@@ -28,4 +28,6 @@ public class FriendRequest {
     public void setUid_from(String uid_from) {
         this.uid_from = uid_from;
     }
+
+
 }

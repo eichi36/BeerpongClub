@@ -34,7 +34,7 @@ public class fragment_manage_friends extends Fragment {
 
     private Button button_addFriends;
     private RecyclerView recyclerView_FriendRequest;
-    private FriendRequestContainer friendRequest;
+    private FriendRequestContainer friendRequestC;
     private FirebaseUser currentUser;
     private FriendRequestAdapter adapter;
     @Override
@@ -56,12 +56,21 @@ public class fragment_manage_friends extends Fragment {
         recyclerView_FriendRequest = mView.findViewById(R.id.recyclerView_showFriendRequests);
         recyclerView_FriendRequest.setHasFixedSize(true);
         recyclerView_FriendRequest.setLayoutManager(new LinearLayoutManager(getContext()));
-        friendRequest = new FriendRequestContainer(currentUser.getUid());
-        Query query = friendRequest.getUid_to_reff();
+        friendRequestC = new FriendRequestContainer(currentUser.getUid());
+        Query query = friendRequestC.getUid_to_reff();
         FirebaseRecyclerOptions<FriendRequest> options  = new FirebaseRecyclerOptions.Builder<FriendRequest>()
                 .setQuery(query, FriendRequest.class)
                 .build();
         adapter = new FriendRequestAdapter(options);
+        adapter.setOnItemClickListener_fq(new FriendRequestAdapter.OnItemClickListener_fq() {
+            @Override
+            public void onItemClick_decline(FriendRequest friendRequest, int positon) {
+                friendRequestC.setFriendRequest_element(friendRequest);
+                friendRequestC.decline_request();
+
+            }
+        });
+
         adapter.setContext(getContext());
         adapter.startListening();
         recyclerView_FriendRequest.setAdapter(adapter);

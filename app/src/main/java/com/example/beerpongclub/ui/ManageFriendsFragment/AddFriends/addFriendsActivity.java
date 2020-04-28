@@ -1,5 +1,6 @@
 package com.example.beerpongclub.ui.ManageFriendsFragment.AddFriends;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -129,16 +130,21 @@ public class addFriendsActivity extends AppCompatActivity  {
         final FriendRequestContainer fq = new FriendRequestContainer(new FriendRequest( FriendRequestContainer.getStateSent(), current_user.getUid()),user.getUid());
 
         button_sendFriendRequest.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
+                if(fq.getUID_TO().equals(fq.getFriendRequest_element().getUid_from())) {
+                    button_sendFriendRequest.setEnabled(false);
+                    button_sendFriendRequest.setText(R.string.your_own_profile_buttonDialogAddFriends);
+                } else {
 
-                if(button_sendFriendRequest.getText().toString().equals(getString(R.string.cancelFriendRequest_buttonDialogAddFriend)) ){
-                    fq.deleteElement();
-                    Log.d(TAG_SEARCH, "Element removed");
-                } else if(button_sendFriendRequest.getText().toString().equals(getString(R.string.send_friend_request_dialog_show_user))){
-                    fq.pushElement();
+                    if (button_sendFriendRequest.getText().toString().equals(getString(R.string.cancelFriendRequest_buttonDialogAddFriend))) {
+                        fq.deleteElement();
+                        Log.d(TAG_SEARCH, "Element removed");
+                    } else if (button_sendFriendRequest.getText().toString().equals(getString(R.string.send_friend_request_dialog_show_user))) {
+                        fq.pushElement();
+                    }
                 }
-
             }
         });
 
@@ -146,13 +152,25 @@ public class addFriendsActivity extends AppCompatActivity  {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot != null && dataSnapshot.hasChild(current_user.getUid())) {
-                    if(dataSnapshot.child(current_user.getUid()).child("state").getValue(String.class).equals(FriendRequestContainer.getStateSent())) {
-                        button_sendFriendRequest.setText(R.string.cancelFriendRequest_buttonDialogAddFriend);
-                    } else {
-                        button_sendFriendRequest.setText(R.string.declinedFriendRequest_buttonDialogAddFriend);
-                        button_sendFriendRequest.setEnabled(false);
-                    }
-                } else if(dataSnapshot != null &&!dataSnapshot.hasChild(current_user.getUid()) ) {
+
+                    button_sendFriendRequest.setText(R.string.cancelFriendRequest_buttonDialogAddFriend);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
+        final ValueEventListener declinedValueListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(fq.getFriendRequest_element().getUid_from())) {
+                    button_sendFriendRequest.setEnabled(false);
+                    button_sendFriendRequest.setText(R.string.declinedFriendRequest_buttonDialogAddFriend);
+                } else {
                     button_sendFriendRequest.setText(R.string.send_friend_request_dialog_show_user);
                 }
             }
@@ -162,6 +180,7 @@ public class addFriendsActivity extends AppCompatActivity  {
 
             }
         };
+        fq.getReff_declined().child(fq.getUID_TO()).addValueEventListener(declinedValueListener);
         fq.getUid_to_reff().addValueEventListener(stateFriendRequestListener);
 
         Glide.with(getApplicationContext()).load(user.getprofile_pic_uri()).into(profilePic);
@@ -171,6 +190,7 @@ public class addFriendsActivity extends AppCompatActivity  {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 fq.getUid_to_reff().removeEventListener(stateFriendRequestListener);
+                fq.getReff_declined().child(fq.getUID_TO()).removeEventListener(declinedValueListener);
 
             }
         });

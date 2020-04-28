@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.beerpongclub.Database.FriendRequestContainer;
 import com.example.beerpongclub.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -20,10 +21,11 @@ public class FriendRequestViewHolder extends RecyclerView.ViewHolder {
     private CircleImageView profile_image;
     private Context context;
 
+    private FriendRequestContainer friendRequest;
     private ImageView button_accept;
     private ImageView button_decline;
 
-    private View mView;
+    public View mView;
     public FriendRequestViewHolder(@NonNull View itemView) {
         super(itemView);
         mView = itemView;
@@ -45,11 +47,15 @@ public class FriendRequestViewHolder extends RecyclerView.ViewHolder {
         button_decline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Toast.makeText(context, "Decline", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
+
+    public ImageView getButton_accept() {return  this.button_accept;}
+    public ImageView getButton_decline(){return  this.button_decline;}
 
     public void setUsername (String username) {
         textView_username.setText(username);
